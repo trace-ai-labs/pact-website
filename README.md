@@ -26,7 +26,7 @@ python build.py
 ## Deploying
 
 The live site is GitHub Pages on the `gh-pages` branch of
-[trace-ai-labs/PACT](https://github.com/trace-ai-labs/PACT), so the URL is `/pact`.
+[trace-ai-labs/PACT](https://github.com/trace-ai-labs/pact), so the URL is `/pact`.
 After building:
 
 ```
@@ -38,5 +38,5 @@ needed; the page is one file.
 
 ## Related
 
-- Benchmark code: [trace-ai-labs/PACT](https://github.com/trace-ai-labs/PACT)
+- Benchmark code: [trace-ai-labs/PACT](https://github.com/trace-ai-labs/pact)
 - Dataset (gated): [huggingface.co/datasets/trace-ai-labs/pact](https://huggingface.co/datasets/trace-ai-labs/pact)

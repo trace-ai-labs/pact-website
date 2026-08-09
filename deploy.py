@@ -12,7 +12,7 @@ import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-PAGES_REPO = "https://github.com/trace-ai-labs/PACT.git"
+PAGES_REPO = "https://github.com/trace-ai-labs/pact.git"
 BRANCH = "gh-pages"
 FILES = ["index.html", "paper.pdf", ".nojekyll"]
 
