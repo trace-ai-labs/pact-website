@@ -498,6 +498,12 @@ pre.bibtex {
 .copybtn:hover { border-color: var(--accent); color: var(--accent); }
 .footbtns { margin-top: 30px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .footnote { font-size: 12.5px; color: var(--muted); margin: 26px auto 0; max-width: 64ch; }
+.priorwork { max-width: 520px; margin: 44px auto 0; }
+.priorwork h3 { font-size: 15px; color: var(--accent-ink); margin-bottom: 9px; }
+.priorwork p { font-size: 13px; line-height: 1.65; color: var(--ink-2); text-align: left; margin: 0 0 14px; }
+.priorwork .venue { color: var(--muted); }
+.priorbtns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
+.morework { margin-top: 28px; font-size: 13.5px; }
 </style>
 
 <header class="site">
@@ -703,7 +709,7 @@ pre.bibtex {
 
 <footer class="site">
   <div class="wrap">
-    <h2>Cite PACT</h2>
+    <h2>Cite this paper</h2>
 <div class="bibwrap">
 <pre class="bibtex" id="bibtex">@article{okamoto2026pact,
   title   = {PACT: Can Enterprise AI Assistants Be
@@ -714,17 +720,50 @@ pre.bibtex {
 }</pre>
 <button class="copybtn" id="copybib" aria-label="Copy citation">Copy</button>
 </div>
+
+    <div class="priorwork">
+      <h3>The work behind PACT</h3>
+      <p>
+        PACT builds on <a href="https://arxiv.org/abs/2608.12323">Why Do AI Agents Break Rules? How
+        Framing, Context, and Social Signals Shape Compliance</a>, which mapped compliance failure
+        modes across 12 procurement chatbots. Safety-fine-tuned models stayed broadly compliant,
+        while task-optimized and agentic models traded compliance away under weak regulatory
+        signals, non-command phrasing, and organizational pressure.
+        <span class="venue">AIES 2026, also presented at the COLM 2026 Workshop on Agent Behavior.</span>
+      </p>
+      <div class="priorbtns">
+        <a class="btn compact" href="https://arxiv.org/abs/2608.12323" data-ico="doc">Paper</a>
+        <a class="btn compact" href="https://trace-ai-labs.github.io/ai-incentives/">Project site</a>
+        <a class="btn compact" href="https://github.com/trace-ai-labs/llm-compliance" data-ico="gh">Code</a>
+      </div>
+      <div class="bibwrap">
+<pre class="bibtex" id="bibtex-prior">@inproceedings{okamoto2026legalincentives,
+  title     = {Why Do AI Agents Break Rules? How Framing,
+               Context, and Social Signals Shape Compliance},
+  author    = {Okamoto, Mika and Erol, Ansel Kaplan and
+               Erol, Kutluhan},
+  booktitle = {AAAI/ACM Conference on AI, Ethics,
+               and Society (AIES)},
+  year      = {2026},
+  eprint    = {2608.12323},
+  archivePrefix = {arXiv}
+}</pre>
+<button class="copybtn" data-copytarget="bibtex-prior" aria-label="Copy citation">Copy</button>
+      </div>
+    </div>
     <div class="footbtns">
       <a class="btn primary" href="https://trace-ai-labs.github.io/pact/paper.pdf" data-ico="doc">Paper</a>
       <a class="btn" href="https://huggingface.co/datasets/trace-ai-labs/pact" data-ico="hf">Dataset</a>
       <a class="btn" href="https://github.com/trace-ai-labs/pact" data-ico="gh">Code</a>
       <a class="btn" href="mailto:mokamoto7@gatech.edu" data-ico="mail">Contact</a>
     </div>
+    <p class="morework">
+      <a href="https://trace-ai-labs.github.io">See more research from TRACE AI Labs</a>
+    </p>
     <p class="footnote">
       By <a href="https://mika-okamoto.github.io">Mika Okamoto</a> (Georgia Tech, Decagon AI) and
       <a href="https://ansel.fyi">Ansel Kaplan Erol</a> (Georgia Tech, Baseten).
-      Open-weights inference provided by <a href="https://www.baseten.co">Baseten</a> AI Labs.
-      More of our work at <a href="https://trace-ai-labs.github.io">TRACE AI Labs</a>.
+      Open-weights inference provided by <a href="https://www.baseten.co">Baseten</a>.
     </p>
   </div>
 </footer>
@@ -1467,7 +1506,6 @@ drawScatter("scatter-size", "params");
     }
     var r = resp[activeTab];
     var rBroke = r.outcome === "broke";
-    var broke = (e.outcome || "broke") === "broke";
 
     var h = '<div class="excard rv">';
     h += '<div class="exhead"><span class="m' + (DOMDESC[e.domain] ? ' tipterm" data-dtip="1' : "") + '">' + esc(DOMLONG[e.domain] || e.domain) + '</span>';
@@ -1483,8 +1521,10 @@ drawScatter("scatter-size", "params");
     }).join("") + '</div></div>';
     h += '<div class="bub bot ' + (rBroke ? "bad" : "ok") + '"><div class="who"><span class="av bot">' + esc(r.model.charAt(0)) + '</span>' + esc(r.model) + '</div>' + esc(r.reply_excerpt) + '</div>';
     h += '</div>';
-    if (r.featured) {
-      h += '<div class="exwhy"><b style="color:var(--' + (broke ? "break" : "hold") + ')">' + (broke ? "What went wrong:" : "What it did right:") + '</b> ' + esc(e.why_it_matters) + '</div>';
+    // every response carries its own rationale, so the note tracks the open tab
+    var rWhy = r.featured ? e.why_it_matters : r.why;
+    if (rWhy) {
+      h += '<div class="exwhy"><b style="color:var(--' + (rBroke ? "break" : "hold") + ')">' + (rBroke ? "What went wrong:" : "What it did right:") + '</b> ' + esc(rWhy) + '</div>';
     }
     h += '</div>';
     h += '<div class="exnav"><button id="exprev" aria-label="Previous example">&larr; Prev</button>' +
@@ -1693,7 +1733,8 @@ drawScatter("scatter-size", "params");
 /* ---------- copy citation ---------- */
 (function () {
   function copyBib(btn, restore) {
-    var txt = document.getElementById("bibtex").textContent;
+    var id = btn.getAttribute("data-copytarget") || "bibtex";
+    var txt = document.getElementById(id).textContent;
     function done() { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = restore; }, 1600); }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(txt).then(done, done);
@@ -1707,8 +1748,9 @@ drawScatter("scatter-size", "params");
       done();
     }
   }
-  var btn = document.getElementById("copybib");
-  if (btn) btn.addEventListener("click", function () { copyBib(btn, "Copy"); });
+  document.querySelectorAll("#copybib, [data-copytarget]").forEach(function (b) {
+    b.addEventListener("click", function () { copyBib(b, "Copy"); });
+  });
   document.querySelectorAll("[data-copybib]").forEach(function (b) {
     b.addEventListener("click", function () { copyBib(b, "Bibtex"); });
   });
