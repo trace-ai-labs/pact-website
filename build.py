@@ -9,6 +9,7 @@ Refresh after new results land in data/:  python build.py
 from __future__ import annotations
 
 import csv
+import html as html_mod
 import json
 from pathlib import Path
 
@@ -46,6 +47,25 @@ def read_csv(path: Path) -> list[dict]:
 
 def f3(x: str | float) -> float:
     return round(float(x), 4)
+
+
+def static_leaderboard(data: dict) -> str:
+    esc = html_mod.escape
+    head = "".join(f"<th>{esc(a)}</th>" for a in data["axes"])
+    rows = []
+    for i, m in enumerate(data["models"], 1):
+        cells = "".join(f'<td class="num">{v:.3f}</td>' for v in m["axes"])
+        rows.append(
+            f'<tr class="datarow"><td class="rank num">{i}</td>'
+            f'<td class="name"><span class="m">{esc(m["name"])}</span>'
+            f'<span class="p">{esc(m["provider"])}</span></td>'
+            f'<td class="num pactv">{m["pact"]:.3f}</td>{cells}</tr>'
+        )
+    return (
+        '<table class="lb"><caption class="sr">PACT leaderboard: PACTScore and six-axis '
+        'profile for every evaluated model</caption><thead><tr><th></th><th class="name">Model</th>'
+        f'<th>PACTScore</th>{head}</tr></thead><tbody>' + "".join(rows) + "</tbody></table>"
+    )
 
 
 def main() -> None:
@@ -106,6 +126,12 @@ def main() -> None:
     if marker not in template:
         raise SystemExit("template.html is missing the /*__PACT_DATA__*/ marker")
     html = template.replace(marker, "const DATA = " + json.dumps(data, separators=(",", ":")) + ";")
+    # Static leaderboard so crawlers (and no-JS readers) see model names and
+    # scores; the interactive render replaces this node's innerHTML on load.
+    lb_marker = "<!--__PACT_LB__-->"
+    if lb_marker not in html:
+        raise SystemExit("template.html is missing the <!--__PACT_LB__--> marker")
+    html = html.replace(lb_marker, static_leaderboard(data), 1)
     (SITE / "index.html").write_text(html, encoding="utf-8")
 
     print(f"index.html written: {len(data['models'])} models, "

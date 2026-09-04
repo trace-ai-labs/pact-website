@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="PACT: a benchmark measuring whether enterprise AI assistants keep embedded compliance rules under realistic user pressure. Leaderboard, data, and paper.">
-<title>PACT · Can enterprise AI assistants be trusted under pressure?</title>
+<meta name="description" content="PACT is an LLM compliance benchmark from TRACE AI Labs that pressure-tests enterprise AI assistants: 3,364 items across 12 regulated domains, 24 models scored. Leaderboard, dataset, and paper.">
+<title>PACT · LLM compliance benchmark: enterprise AI assistants under pressure | TRACE AI Labs</title>
 <link rel="canonical" href="https://trace-ai-labs.github.io/pact/">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
@@ -283,6 +283,7 @@ section > .wrap > h2, .pagehead h2 { font-size: 24px; letter-spacing: -0.015em; 
 /* ---------- leaderboard ---------- */
 .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
 table.lb { border-collapse: collapse; width: 100%; min-width: 800px; font-size: 13px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 table.lb th {
   font-size: 11.5px; font-weight: 600; letter-spacing: 0.03em;
   color: var(--ink-2); text-align: center; padding: 10px 12px 8px;
@@ -682,7 +683,7 @@ pre.bibtex {
   </div>
   <section style="padding-top: 0;">
     <div class="wrap">
-      <div class="tablewrap rv" id="lbwrap"></div>
+      <div class="tablewrap rv" id="lbwrap"><!--__PACT_LB__--></div>
     </div>
   </section>
 </div>
