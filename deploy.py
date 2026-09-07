@@ -14,7 +14,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 PAGES_REPO = "https://github.com/trace-ai-labs/pact.git"
 BRANCH = "gh-pages"
-FILES = ["index.html", "paper.pdf", ".nojekyll"]
+FILES = ["index.html", "paper.pdf", ".nojekyll", "favicon.svg", "favicon.ico", "apple-touch-icon.png"]
 
 
 def run(args: list[str], cwd: Path) -> None:
