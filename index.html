@@ -619,7 +619,7 @@ details.fold[open] .tri { transform: rotate(90deg); }
       <a class="btn primary" href="https://www.alphaxiv.org/pdf/2609.pact-enterprise-ai-compliance-testing" data-ico="doc">Paper</a>
       <a class="btn" href="https://huggingface.co/datasets/trace-ai-labs/pact" data-ico="hf">Dataset</a>
       <a class="btn" href="https://github.com/trace-ai-labs/pact" data-ico="gh">Code</a>
-      <button class="btn" type="button" data-copybib title="Copy the BibTeX citation">Bibtex</button>
+      <button class="btn" type="button" data-copybib>Bibtex</button>
       <a class="btn" href="mailto:mokamoto7@gatech.edu" data-ico="mail">Contact</a>
     </div>
 
@@ -1839,8 +1839,12 @@ drawScatter("scatter-size", "params");
   document.querySelectorAll("#copybib, [data-copytarget]").forEach(function (b) {
     b.addEventListener("click", function () { copyBib(b, "Copy"); });
   });
+  // the Bibtex buttons scroll to the citation block in the footer
   document.querySelectorAll("[data-copybib]").forEach(function (b) {
-    b.addEventListener("click", function () { copyBib(b, "Bibtex"); });
+    b.addEventListener("click", function () {
+      var el = document.querySelector(".bibwrap");
+      if (el) el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "center" });
+    });
   });
 })();
 
